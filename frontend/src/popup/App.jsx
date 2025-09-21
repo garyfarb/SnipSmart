@@ -9,12 +9,10 @@ function App() {
   }
 
   return (
-    <>
-      <div style={{ padding: "10px", width: "150px"}}>
-        <button onClick={handleClick}>Start Snip</button>
-        <p>{status}</p>
-      </div>
-    </>
+    <div style={{ padding: "10px", width: "150px"}}>
+      <button onClick={handleClick}>Start Snip</button>
+      <p>{status}</p>
+    </div>
   )
 }
 
