@@ -13,64 +13,39 @@ function App() {
   }
 
   useEffect(() => {
+    const handleProcessedSnip = async (snip) => {
+      try {
+        setStatus("Cropping...")
+        const cropped = await cropImage(snip.screenshot, snip.rect)
+        const processed = await preprocessImage(cropped)
+
+        setImage(processed)
+        setStatus("Running OCR...")
+
+        const text = await runOCR(processed, "end")
+        setOcrText(text)
+        setStatus("OCR Complete!")
+      } catch (err) {
+        console.error("Failed to process snip:", err)
+        setStatus("OCR Error")
+      }
+    }
+
     chrome.storage.local.get("lastSnip", ({ lastSnip }) => {
       if (lastSnip) {
-        console.log("Popup found last snip in storage:", lastSnip)
-        cropImage(lastSnip.screenshot, lastSnip.rect)
-          .then(preprocessImage)
-          .then((processed) => {
-            setImage(processed);
-            setStatus("Snip Complete!")
-            console.log("Paths", {
-              worker: chrome.runtime.getURL("tesseract/worker.min.js"),
-              core: chrome.runtime.getURL("tesseract/tesseract-core.wasm.js"),
-              lang: chrome.runtime.getURL("tesseract/")
-            });
-            runOCR(processed, "eng")
-              .then((text) => {
-                setOcrText(text)
-                setStatus("OCR Complete!")
-              })
-              .catch((err) => {
-                console.error("OCR failed:", err)
-                setStatus("OCR Error")
-              })
-        })
+        handleProcessedSnip(lastSnip)
       }
     })
 
     const handleStorageChange = (changes) => {
-      if (changes.lastSnip && changes.lastSnip.newValue) {
-        const newSnip = changes.lastSnip.newValue
-        console.log("Popup detected new snip:", newSnip)
-        cropImage(newSnip.screenshot, newSnip.rect)
-          .then(preprocessImage)
-          .then((processed) => {
-            setImage(processed);
-            setStatus("Snip Complete!")
-            console.log("Paths", {
-              worker: chrome.runtime.getURL("tesseract/worker.min.js"),
-              core: chrome.runtime.getURL("tesseract/tesseract-core.wasm.js"),
-              lang: chrome.runtime.getURL("tesseract/")
-            });
-            runOCR(processed, "eng")
-              .then((text) => {
-                setOcrText(text)
-                setStatus("OCR Complete!")
-              })
-              .catch((err) => {
-                console.error("OCR failed:", err)
-                setStatus("OCR Error")
-              })
-        })
+      if (changes.lastSnip?.newValue) {
+        handleProcessedSnip(changes.lastSnip.newValue)
       }
     }
 
-  chrome.storage.onChanged.addListener(handleStorageChange)
-
-  // Cleanup when popup closes
-  return () => chrome.storage.onChanged.removeListener(handleStorageChange)
-}, [])
+    chrome.storage.onChanged.addListener(handleStorageChange)
+    return () => chrome.storage.onChanged.removeListener(handleStorageChange)
+  }, [])
 
   return (
     <>

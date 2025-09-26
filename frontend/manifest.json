@@ -19,7 +19,7 @@
     "128": "icon-128.png"    
   },
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; worker-src 'self';"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; object-src 'self'"
   },
   "background": {
     "service_worker": "service-worker.js"
@@ -33,7 +33,17 @@
    "web_accessible_resources": [
     {
       "resources": [
-        "tesseract/*"
+        "tesseract/tesseract.min.js",
+        "tesseract/worker.min.js",
+        "tesseract/tesseract-core.wasm",
+        "tesseract/tesseract-core.wasm.js",
+        "tesseract/tesseract-core-simd.wasm",
+        "tesseract/tesseract-core-simd.wasm.js",
+        "tesseract/tesseract-core-simd-lstm.wasm",
+        "tesseract/tesseract-core-simd-lstm.wasm.js",
+        "tesseract/tesseract-core-lstm.wasm",
+        "tesseract/tesseract-core-lstm.wasm.js",
+        "tesseract/lang/*.traineddata.gz"
       ],
       "matches": ["<all_urls>"]
     }
