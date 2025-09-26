@@ -11,8 +11,11 @@ export default defineConfig({
         { src: "src/background/service-worker.js", dest: "." },
         { src: "src/content/content.js", dest: "." },
         { src: "manifest.json", dest: "." },
-        { src: "public/*", dest: "." }
-      ]
+        { src: "public/*", dest: "." },
+        { src: "node_modules/tesseract.js/dist/worker.min.js", dest: "tesseract", flatten: true },
+        { src: "node_modules/tesseract.js-core/*.{js,wasm}", dest: "tesseract", flatten: true },
+        { src: "public/languageData/*.gz", dest: "tesseract", flatten: true }
+        ]
     })
   ],
   build: {

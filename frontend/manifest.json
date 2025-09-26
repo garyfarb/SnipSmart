@@ -3,7 +3,8 @@
   "description": "Capture Image -> AI the Image -> Smile :)",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["scripting", "activeTab", "tabs"],
+  "permissions": ["scripting", "activeTab", "tabs", "storage", "notifications"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "src/popup/index.html",
     "default_icon": {
@@ -12,6 +13,14 @@
       "128": "icon-128.png"
     }
   },
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"    
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; worker-src 'self';"
+  },
   "background": {
     "service_worker": "service-worker.js"
   },
@@ -19,6 +28,14 @@
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"]
+    }
+  ],
+   "web_accessible_resources": [
+    {
+      "resources": [
+        "tesseract/*"
+      ],
+      "matches": ["<all_urls>"]
     }
   ]
 }
