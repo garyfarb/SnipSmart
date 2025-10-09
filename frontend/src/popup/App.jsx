@@ -22,7 +22,7 @@ function App() {
         setImage(processed)
         setStatus("Running OCR...")
 
-        const text = await runOCR(processed, "end")
+        const text = await runOCR(processed, "eng")
         setOcrText(text)
         setStatus("OCR Complete!")
       } catch (err) {
