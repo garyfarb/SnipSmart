@@ -72,14 +72,12 @@ async function cropImage(dataUrl, rect) {
 function activateSnipMode() {
   let startX, startY, selectionBox, overlay
   
- //Check if element already exists, if it does then do Console.log that the element exists, otherwise list code in the else under comment
-
-  if (document.getElementById("div")) {
-    console.log("Snip overlay already exists")
+  if (document.getElementById("transparent-snip-overlay")) {
     return
   }
   else {
     overlay = document.createElement("div")
+    overlay.id = "transparent-snip-overlay"
     overlay.style.position = "fixed"
     overlay.style.top = 0
     overlay.style.left = 0
@@ -90,17 +88,6 @@ function activateSnipMode() {
     overlay.style.zIndex = 999999
     document.body.appendChild(overlay)
   }
-
-    // overlay = document.createElement("div")
-    // overlay.style.position = "fixed"
-    // overlay.style.top = 0
-    // overlay.style.left = 0
-    // overlay.style.width = "100%"
-    // overlay.style.height = "100%"
-    // overlay.style.background = "rgba(0,0,0,0.1)"
-    // overlay.style.cursor = "crosshair"
-    // overlay.style.zIndex = 999999
-    // document.body.appendChild(overlay)
 
   function onMouseDown(e) {
     startX = e.clientX;
