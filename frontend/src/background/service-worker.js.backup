@@ -120,15 +120,13 @@ function activateSnipMode() {
 
     const rect = selectionBox.getBoundingClientRect()
 
-    const devicePixelRatio = window.devicePixelRatio || 1;
-
     chrome.runtime.sendMessage({
       action: "SNIP_COMPLETE",
       rect: {
-        x: Math.round(rect.x * devicePixelRatio),
-        y: Math.round(rect.y * devicePixelRatio),   
-        width: Math.round(rect.width * devicePixelRatio),
-        height: Math.round(rect.height * devicePixelRatio)
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height
       }
     })
 
